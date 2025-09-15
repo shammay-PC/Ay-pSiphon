@@ -1,0 +1,9 @@
+#! /bin/bash
+
+#To use the Uninstallation script, run sudo sh UnAy-pSiphon
+
+rm -rf /etc/Ay-pSiphon
+rm -rf /usr/bin/psiphon
+rm -rf Ay-pSiphon
+rm -rf ca.psiphon.PsiphonTunnel.tunnel-core
+rm -rf UnAy-pSiphoner
