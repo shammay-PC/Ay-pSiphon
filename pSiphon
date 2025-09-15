@@ -1,0 +1,3 @@
+#! /bin/bash
+
+/etc/Ay-pSiphon/psiphon-tunnel-core-x86_64 -config /etc/Ay-pSiphon/pSiphon.config
