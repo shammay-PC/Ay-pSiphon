@@ -38,7 +38,7 @@ if test -f /usr/bin/pSiphon; then
 else "ERROR: pSiphon startup script not found"
 fi
 
-if test -f UnAy-pSiphoner; then
+if test -f UnAy-pSiphon; then
   echo "pSiphon uninstall script found"
 else "ERROR: pSiphon uninstall script not found"
 fi
@@ -62,7 +62,7 @@ fi
 
 echo " "
 #Finish installer and give message
-echo "Ay-pSiphon for Linux installation successfully completed. Run: psiphon	 to start the program. Please allow a reasonable amount for pSiphon to connect as it may take a while"
+echo "Ay-pSiphon for Linux installation successfully completed. Run: psiphon"
 
 #Start the Ay-pSiphon
 echo "Starting Ay-pSiphon . . ."
