@@ -1,59 +1,63 @@
 #! /bin/bash
 
 #Create necessary directories
-mkdir /etc/Ay-pSiphon/
+[cite_start]mkdir -p /etc/Ay-pSiphon/ [cite: 11]
 
 #Download neccessary scripts and files
 echo "Starting downloads"
-wget -P /etc/Ay-pSiphon/ https://raw.githubusercontent.com/Psiphon-Labs/psiphon-tunnel-core-binaries/master/linux/psiphon-tunnel-core-x86_64 --quiet
-wget -P /etc/Ay-pSiphon/ https://raw.githubusercontent.com/shammay-PC/Ay-pSiphon/main/pSiphon.config --quiet
-wget -P /usr/bin/ https://raw.githubusercontent.com/shammay-PC/Ay-pSiphon/main/pSiphon --quiet
-wget https://raw.githubusercontent.com/shammay-PC/Ay-pSiphon/refs/heads/main/UnAy-pSiphon --quiet
+[cite_start]wget -P /etc/Ay-pSiphon/ https://raw.githubusercontent.com/Psiphon-Labs/psiphon-tunnel-core-binaries/master/linux/psiphon-tunnel-core-x86_64 --quiet [cite: 11]
+[cite_start]wget -P /etc/Ay-pSiphon/ https://raw.githubusercontent.com/shammay-PC/Ay-pSiphon/main/pSiphon.config --quiet [cite: 11]
+[cite_start]wget -P /usr/bin/ https://raw.githubusercontent.com/shammay-PC/Ay-pSiphon/main/pSiphon --quiet [cite: 11]
+[cite_start]wget https://raw.githubusercontent.com/shammay-PC/Ay-pSiphon/refs/heads/main/UnAy-pSiphon --quiet [cite: 11]
 echo "Downloads finished"
 
 echo " "
 echo "Installing Ay-pSiphon"
 
 #Give these files the executable permission
-chmod +x /etc/Ay-pSiphon/psiphon-tunnel-core-x86_64
-chmod +x /usr/bin/pSiphon 
+[cite_start]chmod +x /etc/Ay-pSiphon/psiphon-tunnel-core-x86_64 [cite: 11]
+[cite_start]chmod +x /usr/bin/pSiphon [cite: 11]
 echo "Ay-pSiphon Installation finished"
 
 echo " "
 echo "Running post install checks"
 echo " "
-echo "Checking if files exist (Phase 1/2)"
-if test -f /etc/Ay-pSiphon/psiphon-tunnel-core-x86_64; then
+echo "Checking if files exist (Phase 1/3)"
+[cite_start]if test -f /etc/Ay-pSiphon/psiphon-tunnel-core-x86_64; [cite: 12]
+then
   echo "pSiphon binary found"
 else "ERROR: pSiphon binary not found"
 fi
 
-if test -f /etc/Ay-pSiphon/pSiphon.config; then
+[cite_start]if test -f /etc/Ay-pSiphon/pSiphon.config; [cite: 13]
+then
   echo "pSiphon configuration found"
 else "ERROR: pSiphon configuration not found"
 fi
 
-if test -f /usr/bin/pSiphon; then
+[cite_start]if test -f /usr/bin/pSiphon; [cite: 14]
+then
   echo "pSiphon startup script found"
 else "ERROR: pSiphon startup script not found"
 fi
 
-if test -f UnAy-pSiphon; then
+[cite_start]if test -f UnAy-pSiphon; [cite: 15]
+then
   echo "pSiphon uninstall script found"
 else "ERROR: pSiphon uninstall script not found"
 fi
 
 echo " "
-echo "Checking if correct permssions have been applied (Phase 2/2)"
+echo "Checking if correct permssions have been applied (Phase 2/3)"
 
-if test -x /etc/Ay-pSiphon/psiphon-tunnel-core-x86_64;
+[cite_start]if test -x /etc/Ay-pSiphon/psiphon-tunnel-core-x86_64; [cite: 16]
 then
     echo "pSiphon binaries have correct permissions"
 else
     echo "ERROR: pSiphon binaries do not have required permissions"
 fi
 
-if test -x /usr/bin/pSiphon;
+[cite_start]if test -x /usr/bin/pSiphon; [cite: 17]
 then
     echo "pSiphon startup file has correct permissions"
 else
@@ -61,9 +65,41 @@ else
 fi
 
 echo " "
-#Finish installer and give message
-echo "Ay-pSiphon for Linux installation successfully completed. Run: psiphon"
+echo "Creating and enabling systemd service (Phase 3/3)"
 
-#Start the Ay-pSiphon
-echo "Starting Ay-pSiphon . . ."
-sudo psiphon
+# Create the systemd service file
+cat <<EOF | sudo tee /etc/systemd/system/Ay-pSiphon.service > /dev/null
+[Unit]
+Description=Ay-pSiphon - Psiphon VPN Tunnel Core (Auto-Restart)
+After=network.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/etc/Ay-pSiphon/psiphon-tunnel-core-x86_64 -config /etc/Ay-pSiphon/pSiphon.config
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Reload the systemd manager configuration
+sudo systemctl daemon-reload
+
+# Enable the service to start on boot
+sudo systemctl enable Ay-pSiphon.service
+
+# Start the service immediately
+sudo systemctl start Ay-pSiphon.service
+
+echo "Ay-pSiphon systemd service installed and started."
+echo " "
+
+#Finish installer and give message
+echo "Ay-pSiphon for Linux installation successfully completed."
+echo "The service is now running automatically at boot time."
+echo "You can check the status with: systemctl status Ay-pSiphon.service"
+
+#Start the Ay-pSiphon (Original line replaced by systemctl start above)
+[cite_start]# [cite: 18] sudo psiphon
