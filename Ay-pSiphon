@@ -102,4 +102,4 @@ echo "The service is now running automatically at boot time."
 echo "You can check the status with: systemctl status Ay-pSiphon.service"
 
 #Start the Ay-pSiphon (Original line replaced by systemctl start above)
-[cite_start]# [cite: 18] sudo psiphon
+[cite_start]# [cite: 18] sudo pSiphon
